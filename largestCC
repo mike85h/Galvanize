@@ -1,0 +1,55 @@
+var cards = ['4916-2600-1804-0530', '4779-252888-3972', '4252-278893-7978', '4556-4242-9283-2260'];
+//should return 3rd index '4252-278893-7978'
+//return the last of any equivalent sums.
+
+function largestCc(cardsArray) {
+  //declare variables
+  var splitArray = [];
+  var sumArray = [];
+  var sum = 0;
+  var maxSum = -1;
+  var maxIndex = 0;
+
+  //create new array with dashes removed
+  var noDashesArray = cardsArray.map(function(value, index, array) {
+    return value.replace(/-/g, '');
+  });
+
+  //create new 2d array with all cc numbers split
+  splitArray = noDashesArray.map(function(value, index, array) {
+    return value.split("");
+  })
+
+  //loop through 2d array to add together individual values into sums
+  for (var i = 0; i < splitArray.length; i++) {
+    sum = 0;
+    for (var j = 0; j < splitArray[i].length; j++) {
+      sum = sum + parseInt(splitArray[i][j]);
+    }
+    //add sum to array which contains the sums for each cc number
+    sumArray.push(sum);
+  }
+
+  //compare added sums to find index of last instance of highest sum.
+  for (var k = 1; k < sumArray.length - 1; k++) {
+    var value1 = sumArray[k - 1];
+    var value2 = sumArray[k];
+    if (value2 >= value1) {
+      maxSum = value2
+      maxIndex = k;
+    } else {
+      maxSum = value1;
+      maxIndex = k - 1;
+    }
+  }
+
+  /*Remove comments to log largestCC index or result of sum into console
+  console.log(maxIndex);
+  console.log(maxSum);
+  */
+
+  return cards[maxIndex];
+}
+
+//call function with given array
+largestCc(cards);
